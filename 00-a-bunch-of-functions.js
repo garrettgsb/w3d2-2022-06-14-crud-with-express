@@ -8,11 +8,9 @@ function decrement() { writeCounter(readCounter() - 1); }
 function setTo(value) { writeCounter(Number(value)); }
 function reset() { setTo(0); }
 
-
 // Mapping between Javascript functions and command line interface
 {
   const [_interpreter, _file, operation, value] = process.argv;
-  console.log('Args:', process.argv);
   if (operation === 'increment') { increment(); console.log(`After ${operation}: ${readCounter()}`)}
   else if (operation === 'decrement') { decrement(); console.log(`After ${operation}: ${readCounter()}`)}
   else if (operation === 'set') { setTo(value); console.log(`After ${operation}: ${readCounter()}`)}
@@ -30,6 +28,7 @@ function reset() { setTo(0); }
     <h1>Count is: ${readCounter()}</h1>
     <a href='/increment'>Increment</a>
     <a href='/decrement'>Decrement</a>
+    <a href='/reset'>Reset</a>
     <form method='GET' action='/reset'>
       <button>Reset</button>
     </form>
@@ -45,8 +44,8 @@ function reset() { setTo(0); }
   app.get('/set', (request, response) => {
     const { newCounterValue } = request.query;
     if (newCounterValue) setTo(newCounterValue);
-    response.redirect('/')
+    response.redirect('/');
   });
 
-  // app.listen(8080, () => { console.log(`Listening on ${PORT}!`)});
+  app.listen(PORT, () => { console.log(`Listening on ${PORT}!`)});
 }

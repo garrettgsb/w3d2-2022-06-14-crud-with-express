@@ -1,4 +1,4 @@
-let todos = [
+const todos = [
   "Get milk",
   "Wash car",
   "Walk dog",
@@ -23,21 +23,52 @@ function viewTodos() {
   <ul>
   ${todos.map((todo, idx) => `
     <li>
-    ${todo} [${idx}]
-      <form method='POST' action='/todos/${idx}'>
-        <input name='newText'>
-        <button>Edit</button>
+      ${todo} [${idx}]
+      <form method='POST' action='/${idx}/update/'>
+        <input name='newTodo'>
+        <button>✏️</button>
       </form>
-      <form method='POST' action='/todos/${idx}/delete'>
+      <form method='POST' action='/${idx}/delete/'>
         <button>🚮</button>
       </form>
     </li>
   `).join('\n')}
   </ul>
-
-  <form method='POST' action='/todos'>
-    <input name='todo'>
-    <button>+ Add</button>
+  <form method='POST' action='/create'>
+    <input name='newTodo'></input>
+    <button>✚</button>
   </form>
   `;
 }
+
+/*
+Create -> addTodo
+Read -> viewTodos
+Update -> updateTodo
+Delete -> removeTodo
+*/
+
+const express = require('express');
+const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+
+app.get('/', (request, response) => { response.send(viewTodos()) });
+app.post('/create', (request, response) => {
+  const { newTodo } = request.body;
+  // const newTodo = request.body.newTodo;
+  todos.push(newTodo);
+  response.redirect('/');
+});
+app.post('/:idx/update', (request, response) => {
+  const { idx } = request.params;
+  const { newTodo } = request.body
+  updateTodo(idx, newTodo);
+  response.redirect('/');
+});
+app.post('/:idx/delete', (request, response) => {
+  const { idx } = request.params;
+  removeTodo(idx);
+  response.redirect('/');
+});
+app.listen(8080, () => console.log('Express is listening on port 8080'));

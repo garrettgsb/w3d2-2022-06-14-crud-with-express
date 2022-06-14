@@ -486,3 +486,30 @@ function deleteAuthor(id) {
   const authorIdx = authors.indexOf(author);
   authors.splice(authorIdx, 1);
 }
+
+
+/*
+
+RESTful routing:
+
+GET /blogs                -> Just render the blogs array
+GET /blogs/:id            -> getBlogById()
+POST /blogs               -> addBlog()
+POST /blogs/:id           -> editBlog()
+POST /blogs/:id/delete    -> deleteBlog()
+
+GET /authors              -> Just render the authors array
+GET /authors/:id          -> getAuthorById() (Might also involve getBlogsForAuthor())
+POST /authors             -> addAuthor()
+POST /authors/:id         -> editAuthor()
+POST /authors/:id/delete  -> deleteAuthor()
+
+GET /movies
+GET /actors/29384729/movies
+POST /actors
+
+Bonus:
+
+GET /authors/:id/blogs    -> getBlogsForAuthor()
+
+*/
